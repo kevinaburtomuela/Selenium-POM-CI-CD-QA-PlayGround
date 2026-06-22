@@ -17,24 +17,16 @@ class LoginPage:
         self.wait = WebDriverWait(driver, 10)
 
     def enter_username(self, username):
-        self.wait.until(
-            EC.visibility_of_element_located(self.USERNAME_INPUT)
-        ).send_keys(username)
+        self.wait.until(EC.visibility_of_element_located(self.USERNAME_INPUT)).send_keys(username)
 
     def enter_password(self, password):
-        self.wait.until(
-            EC.visibility_of_element_located(self.PASSWORD_INPUT)
-        ).send_keys(password)
+        self.wait.until(EC.visibility_of_element_located(self.PASSWORD_INPUT)).send_keys(password)
 
     def click_login(self):
-        self.wait.until(
-            EC.element_to_be_clickable(self.LOGIN_BUTTON)
-        ).click()
+        self.wait.until(EC.element_to_be_clickable(self.LOGIN_BUTTON)).click()
 
     def get_error_message(self):
-        return self.wait.until(
-            EC.visibility_of_element_located(self.ERROR_MESSAGE)
-        ).text
+        return self.wait.until(EC.visibility_of_element_located(self.ERROR_MESSAGE)).text
 
     def write_user_password(self, username, password):
         self.enter_username(username)
@@ -44,9 +36,7 @@ class LoginPage:
         self.click_login()
 
     def validate_URL(self):
-        WebDriverWait(self.driver, 10).until(
-            lambda d: d.current_url == "https://qaplayground.com/bank/dashboard"
-        )
+        WebDriverWait(self.driver, 10).until(lambda d: d.current_url == "https://qaplayground.com/bank/dashboard")
 
     def login_admin_user(self, username, password):
         self.driver.get(self.URL)
