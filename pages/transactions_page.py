@@ -53,8 +53,17 @@ class Transactionpage:
             assert cell.text.strip() == "Deposit", (f"Se encontro '{cell.text}' en lugar de 'Deposit'")
 
     def select_date_from(self,day):
+        print("Abriendo calendario")
         self.wait.until(EC.element_to_be_clickable(self.FROM_DATE)).click()
-        self.wait.until(EC.element_to_be_clickable((By.XPATH, f"//button[@data-day='{day}']"))).click()
+
+        print(f"Buscando fecha {day}")
+        self.wait.until(
+            EC.element_to_be_clickable(
+                (By.XPATH, f"//button[@data-day='{day}']")
+            )
+        ).click()
+
+        print("Fecha seleccionada")
 
     def select_date_to(self,day):
         self.wait.until(EC.element_to_be_clickable(self.TO_DATE)).click()
