@@ -54,16 +54,20 @@ class Transactionpage:
 
     def select_date_from(self,day):
         print("Abriendo calendario")
-        self.wait.until(EC.element_to_be_clickable(self.FROM_DATE)).click()
 
-        print(f"Buscando fecha {day}")
-        self.wait.until(
-            EC.element_to_be_clickable(
-                (By.XPATH, f"//button[@data-day='{day}']")
-            )
-        ).click()
+        from_date = self.wait.until(
+            EC.presence_of_element_located(self.FROM_DATE)
+        )
 
-        print("Fecha seleccionada")
+        self.driver.execute_script(
+            """
+            arguments[0].value = arguments[1];
+            arguments[0].dispatchEvent(new Event('input'));
+            arguments[0].dispatchEvent(new Event('change'));
+            """,
+            from_date,
+            day
+        )
 
     def select_date_to(self,day):
         self.wait.until(EC.element_to_be_clickable(self.TO_DATE)).click()
