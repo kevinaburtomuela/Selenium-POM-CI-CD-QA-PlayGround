@@ -31,7 +31,9 @@ class Transactionpage:
         self.wait.until(EC.element_to_be_clickable(self.PRIMARY_SAVINGS_OPTION)).click()
 
     def click_apply_filter_btn(self):
-        self.wait.until(EC.visibility_of_element_located(self.APPLY_FILTER_BUTTON)).click()
+        btn = self.wait.until(EC.element_to_be_clickable(self.APPLY_FILTER_BUTTON))
+        self.driver.execute_script("arguments[0].scrollIntoView(true);", btn)
+        btn.click()
 
     def validate_all_accounts_are_primary_savings(self):
         account_cells = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located(self.ACCOUNT_COLUMN_CELLS))
@@ -52,22 +54,20 @@ class Transactionpage:
         for cell in account_cells:
             assert cell.text.strip() == "Deposit", (f"Se encontro '{cell.text}' en lugar de 'Deposit'")
 
-    def select_date_from(self,day):
+    def select_date_from(self, day):
         print("Abriendo calendario")
 
+        # abrir el input del calendario (ajusta si es otro locator)
         from_date = self.wait.until(
-            EC.presence_of_element_located(self.FROM_DATE)
+            EC.element_to_be_clickable(self.FROM_DATE)
         )
+        from_date.click()
 
-        self.driver.execute_script(
-            """
-            arguments[0].value = arguments[1];
-            arguments[0].dispatchEvent(new Event('input'));
-            arguments[0].dispatchEvent(new Event('change'));
-            """,
-            from_date,
-            day
+        # click en el día real del calendario
+        day_button = self.wait.until(
+            EC.element_to_be_clickable((By.XPATH, f"//button[@data-day='{day}']"))
         )
+        day_button.click()
 
     def select_date_to(self,day):
         self.wait.until(EC.element_to_be_clickable(self.TO_DATE)).click()

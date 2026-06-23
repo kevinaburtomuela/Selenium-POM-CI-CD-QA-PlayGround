@@ -281,14 +281,16 @@ class TestLogin:
     @allure.title("TC016 - Validate date filter")
     @allure.description("Verify that transactions can be filtered correctly by date")
     @pytest.mark.parametrize("login_as", ["admin"], indirect=True)
-    def test_tc016_filter_by_date(self, login_as):
+    def test_tc016_validate_date_filter(self, login_as):
         with allure.step("Log in as an admin user"):
             tx = Transactionpage(login_as)
         with allure.step("Navigate to transaction page"):
             tx.click_transaction_page()
         with allure.step("Select the calendar date filter"):
-            tx.select_date_from("23/6/2026")
+            tx.select_date_from("25/6/2026")
+            time.sleep(10)
         with allure.step("Apply the filter selection"):
             tx.click_apply_filter_btn()
+            time.sleep(10)
         with allure.step("Validate the correct functionality of the date filter"):
             assert tx.get_not_found_records() == "No transactions found"
