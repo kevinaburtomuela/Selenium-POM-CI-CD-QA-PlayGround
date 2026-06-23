@@ -17,7 +17,7 @@ class AccountPage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = WebDriverWait(driver, 20)
 
     def clic_account_page(self):
         self.wait.until(

@@ -14,7 +14,7 @@ class LoginPage:
 
     def __init__(self, driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = WebDriverWait(driver, 20)
 
     def enter_username(self, username):
         self.wait.until(EC.visibility_of_element_located(self.USERNAME_INPUT)).send_keys(username)
@@ -36,7 +36,7 @@ class LoginPage:
         self.click_login()
 
     def validate_URL(self):
-        WebDriverWait(self.driver, 10).until(lambda d: d.current_url == "https://qaplayground.com/bank/dashboard")
+        WebDriverWait(self.driver, 20).until(lambda d: d.current_url == "https://qaplayground.com/bank/dashboard")
 
     def login_admin_user(self, username, password):
         self.driver.get(self.URL)

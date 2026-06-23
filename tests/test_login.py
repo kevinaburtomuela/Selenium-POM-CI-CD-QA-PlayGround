@@ -288,9 +288,7 @@ class TestLogin:
             tx.click_transaction_page()
         with allure.step("Select the calendar date filter"):
             tx.select_date_from("25/6/2026")
-            time.sleep(10)
         with allure.step("Apply the filter selection"):
             tx.click_apply_filter_btn()
-            time.sleep(10)
         with allure.step("Validate the correct functionality of the date filter"):
             assert tx.get_not_found_records() == "No transactions found"

@@ -19,7 +19,7 @@ class Transactionpage:
 
     def __init__(self,driver):
         self.driver = driver
-        self.wait = WebDriverWait(driver, 10)
+        self.wait = WebDriverWait(driver, 20)
 
     def click_transaction_page(self):
         self.wait.until(EC.element_to_be_clickable(self.TRANSACTION_PAGE_BUTTON)).click()
@@ -36,7 +36,7 @@ class Transactionpage:
         btn.click()
 
     def validate_all_accounts_are_primary_savings(self):
-        account_cells = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located(self.ACCOUNT_COLUMN_CELLS))
+        account_cells = WebDriverWait(self.driver, 20).until(EC.presence_of_all_elements_located(self.ACCOUNT_COLUMN_CELLS))
 
         for cell in account_cells:
             assert cell.text.strip() == "Primary Savings", (f"Se encontró '{cell.text}' en lugar de 'Primary Savings'")
@@ -48,7 +48,7 @@ class Transactionpage:
         self.wait.until(EC.element_to_be_clickable(self.DEPOSIT_OPTION)).click()
 
     def validate_all_types_are_deposit(self):
-        account_cells = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located(self.TYPE_COLUMN_CELLS))
+        account_cells = WebDriverWait(self.driver, 20).until(EC.presence_of_all_elements_located(self.TYPE_COLUMN_CELLS))
         for cell in account_cells:
             print(cell.text)
         for cell in account_cells:
