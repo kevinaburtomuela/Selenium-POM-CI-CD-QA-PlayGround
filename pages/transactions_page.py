@@ -57,26 +57,19 @@ class Transactionpage:
     def select_date_from(self, day):
         print("Abriendo calendario")
         from datetime import datetime
-        import time
 
         date_obj = datetime.strptime(day, "%d/%m/%Y")
-        iso_day = date_obj.strftime("%Y-%m-%d")
+        # Formato M/D/YYYY sin ceros: 6/25/2026
+        formatted_day = f"{date_obj.month}/{date_obj.day}/{date_obj.year}"
 
         from_date = self.wait.until(
             EC.element_to_be_clickable(self.FROM_DATE)
         )
         from_date.click()
 
-        # DEBUG - imprime todos los botones con data-day que encuentre
-        time.sleep(1)
-        buttons = self.driver.find_elements(By.XPATH, "//button[@data-day]")
-        print(f"Botones con data-day encontrados: {len(buttons)}")
-        for b in buttons:
-            print(">>> data-day:", b.get_attribute("data-day"))
-
         day_button = self.wait.until(
             EC.element_to_be_clickable(
-                (By.XPATH, f"//button[@data-day='{iso_day}']")
+                (By.XPATH, f"//button[@data-day='{formatted_day}']")
             )
         )
         day_button.click()
