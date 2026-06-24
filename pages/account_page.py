@@ -24,10 +24,6 @@ class AccountPage:
             EC.element_to_be_clickable(self.ACCOUNT_PAGE_BUTTON)
         ).click()
 
-        self.wait.until(
-            lambda driver: "accounts" in driver.current_url
-        )
-
     def click_edit_by_account_name(self, account_name):
         self.wait.until(
             EC.element_to_be_clickable(
