@@ -31,9 +31,15 @@ class Transactionpage:
         self.wait.until(EC.element_to_be_clickable(self.PRIMARY_SAVINGS_OPTION)).click()
 
     def click_apply_filter_btn(self):
+        from selenium.webdriver.common.keys import Keys
+        import time
+
+        # Cerrar calendario con Escape
+        self.driver.find_element(By.TAG_NAME, "body").send_keys(Keys.ESCAPE)
+        time.sleep(0.5)
         btn = self.wait.until(EC.element_to_be_clickable(self.APPLY_FILTER_BUTTON))
         self.driver.execute_script("arguments[0].scrollIntoView(true);", btn)
-        btn.click()
+        self.driver.execute_script("arguments[0].click();", btn)
 
     def validate_all_accounts_are_primary_savings(self):
         account_cells = WebDriverWait(self.driver, 20).until(EC.presence_of_all_elements_located(self.ACCOUNT_COLUMN_CELLS))
@@ -57,10 +63,16 @@ class Transactionpage:
     def select_date_from(self, day):
         print("Abriendo calendario")
         from datetime import datetime
+        import platform
 
         date_obj = datetime.strptime(day, "%d/%m/%Y")
-        # Formato M/D/YYYY sin ceros: 6/25/2026
-        formatted_day = f"{date_obj.month}/{date_obj.day}/{date_obj.year}"
+
+        if platform.system() == "Windows":
+            formatted_day = f"{date_obj.day}/{date_obj.month}/{date_obj.year}"  # 25/6/2026
+        else:
+            formatted_day = f"{date_obj.month}/{date_obj.day}/{date_obj.year}"  # 6/25/2026
+
+        print(f"Buscando data-day: {formatted_day}")
 
         from_date = self.wait.until(
             EC.element_to_be_clickable(self.FROM_DATE)
