@@ -1,6 +1,4 @@
-¡Perfecto! Aquí están los dos archivos:
-.github/workflows/main.yml
-yamlname: QA Automation Test
+Test: QA Automation Test
 
 on:
   push:
