@@ -1,4 +1,4 @@
-Test: QA Automation Test
+name: QA Automation Test
 
 on:
   push:
