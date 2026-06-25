@@ -1,6 +1,8 @@
-name: QA Automation Test
+¡Perfecto! Aquí están los dos archivos:
+.github/workflows/main.yml
+yamlname: QA Automation Test
 
-on: 
+on:
   push:
     branches: [ main ]
   pull_request:
@@ -19,7 +21,7 @@ jobs:
         with:
           python-version: "3.9"
 
-      - name: Install system dependencies (Chrome)
+      - name: Install system dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y wget unzip
@@ -29,10 +31,54 @@ jobs:
           wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
           sudo apt install -y ./google-chrome-stable_current_amd64.deb
 
-      - name: Install dependencies
+      - name: Install Python dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run tests (headless)
-        run: pytest -v
+      - name: Run tests
+        run: pytest -v --alluredir=allure-results
+
+      - name: Generate Allure Report
+        if: always()
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: allure-results
+
+      - name: Upload Allure Report as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-report
+          path: allure-report
+          retention-days: 30
+
+      - name: Upload Allure Results on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+          retention-days: 7
+
+      - name: Deploy Allure Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
+
+      - name: Login to Docker Hub
+        if: success()
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build Docker image
+        if: success()
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/qa-playground:latest .
+
+      - name: Push Docker image
+        if: success()
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/qa-playground:latest
