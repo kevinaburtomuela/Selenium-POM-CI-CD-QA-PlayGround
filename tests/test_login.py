@@ -287,7 +287,7 @@ class TestLogin:
         with allure.step("Navigate to transaction page"):
             tx.click_transaction_page()
         with allure.step("Select the calendar date filter"):
-            tx.select_date_from("26/6/2026")
+            tx.select_date_from("30/6/2026")
         with allure.step("Apply the filter selection"):
             tx.click_apply_filter_btn()
         with allure.step("Validate the correct functionality of the date filter"):
